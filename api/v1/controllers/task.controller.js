@@ -67,3 +67,56 @@ module.exports.detail = async (req, res) => {
         console.log("Not Found!");
     }
 }
+
+// [PATCH] /api/v1/tasks/change-status/:id
+module.exports.changeStatus = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const status = req.body.status;
+
+        await Task.updateOne({
+                _id: id,
+            },
+            {
+                status: status
+            }
+        );
+
+        res.json({
+            code: 200, // cập nhật thành công
+            message: "Cập nhật trạng thái thành công!"
+        });
+    } catch (error) {
+        res.json({
+            code: 400, 
+            message: "Không tồn tại!"
+        });
+    }
+}
+
+
+// [PATCH] /api/v1/tasks/change-status/:id
+module.exports.changeMulti = async (req, res) => {
+    try {
+        const { ids, key, value } = req.body;
+
+        await Task.updateMany(
+            {
+                _id: { $in: ids }
+            },
+            {
+                status: value
+            }
+        )
+
+        res.json({
+            code: 200,
+            message: "Cập nhật trạng thái thành công!"
+        });
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Không tồn tại!"
+        });
+    }
+}

@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const database = require("./config/database");
 require("dotenv").config();
 
@@ -8,6 +9,9 @@ const app = express();
 const port = process.env.PORT;
 
 database.connect();
+
+// parse application/json
+app.use(bodyParser.json()); // lấy dữ liệu trong body 
 
 // Router ver 1
 routesApiVer1(app);
