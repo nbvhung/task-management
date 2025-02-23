@@ -100,19 +100,48 @@ module.exports.changeMulti = async (req, res) => {
     try {
         const { ids, key, value } = req.body;
 
-        await Task.updateMany(
-            {
-                _id: { $in: ids }
-            },
-            {
-                status: value
-            }
-        )
+        switch (key) {
+            case "status":
+                await Task.updateMany(
+                    {
+                        _id: { $in: ids }
+                    },
+                    {
+                        status: value
+                    }
+                )
+                
+                res.json({
+                    code: 200,
+                    message: "Cập nhật trạng thái thành công!"
+                });
+                break;
 
-        res.json({
-            code: 200,
-            message: "Cập nhật trạng thái thành công!"
-        });
+            case "delete":
+                await Task.updateMany(
+                    {
+                        _id: { $in: ids }
+                    },
+                    {
+                        deleted: true,
+                        deletedAt: new Date()
+                    },
+                )
+                res.json({
+                    code: 200,
+                    message: "Xóa thành công!"
+                })
+                break;
+
+            default:
+                res.json({
+                    code: 400,
+                    message: "Không tồn tại!"
+                });
+                break;
+        }
+
+        
     } catch (error) {
         res.json({
             code: 400,
@@ -152,6 +181,28 @@ module.exports.edit = async (req, res) => {
         res.json({
             code: 200, 
             message: "Chỉnh sửa thành công!",
+        });
+    } catch (error) {
+        res.json({
+            code: 400, 
+            message: "Lỗi!",
+        });
+    }
+}
+
+
+// [DELETE] /api/v1/tasks/delete/:id
+module.exports.delete = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        await Task.updateOne({ _id: id }, {
+            deleted: true,
+            deletedAt: new Date()
+        });
+        res.json({
+            code: 200, 
+            message: "Xóa thành công!",
         });
     } catch (error) {
         res.json({
