@@ -1,4 +1,5 @@
 const taskRoutes = require("./task.route");
+const userRoutes = require("./user.route");
 
 module.exports = (app) => {
 
@@ -6,4 +7,5 @@ module.exports = (app) => {
 
     app.use(`${version}/tasks`, taskRoutes);
 
+    app.use(`${version}/users`, userRoutes);
 }
