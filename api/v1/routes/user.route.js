@@ -9,4 +9,6 @@ route.post("/register", validate.register, controller.register);
 
 route.post("/login", validate.login, controller.login);
 
+route.post("/password/forgot", controller.forgotPassword);
+
 module.exports = route;
