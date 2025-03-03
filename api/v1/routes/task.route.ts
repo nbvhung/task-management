@@ -7,4 +7,6 @@ route.get("/", controller.index);
 
 route.get("/detail/:id", controller.detail);
 
+route.patch("/change-status/:id", controller.changeStatus);
+
 export const taskRoutes: Router = route;
