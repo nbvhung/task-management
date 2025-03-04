@@ -26,7 +26,7 @@ export const index = async (req: Request, res: Response) => {
     // Search
     let objectSearch = searchHelper(req.query);
 
-    if(req.query.keyword){
+    if (req.query.keyword) {
         find.title = objectSearch.regex;
     }
     // End Search
@@ -87,14 +87,52 @@ export const changeStatus = async (req: Request, res: Response) => {
         });
 
         res.json({
-            code: 200, 
+            code: 200,
             message: "Cập nhật trạng thái thành công!"
         });
     } catch (error) {
         res.json({
-            code: 400, 
+            code: 400,
             message: "Không tồn tại!"
         });
     }
-    
+}
+
+
+export const changeMulti = async (req: Request, res: Response) => {
+    try {
+        const ids: string[] = req.body.ids;
+        const key: string = req.body.key;
+        const value: string = req.body.value;
+
+        switch (key) {
+            case "status":
+                await Task.updateMany({
+                    id: { $in: ids }
+                },
+                    {
+                        status: value
+                    }
+                );
+
+                res.json({
+                    code: 200,
+                    message: "Cập nhật trạng thái thành công!"
+                });
+                break;
+
+            default:
+                res.json({
+                    code: 400,
+                    message: "Thất bại!"
+                });
+                break;
+        }
+
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Thất bại!"
+        })
+    }
 }
