@@ -7,4 +7,6 @@ route.post("/register", controller.register);
 
 route.post("/login", controller.login);
 
+route.get("/detail/:id", controller.detail);
+
 export const userRoutes: Router = route;
